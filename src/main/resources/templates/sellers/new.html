@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{/seller/register}" th:object="${user}" method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" th:field="*{email}" />
+            <p class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            <ul>
+                <li th:each="err : ${#fields.errors('email')}" th:text="${err}" />
+            </ul>
+        </div>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input id="name" th:field="*{name}" />
+            <ul>
+                <li th:each="err : ${#fields.errors('name')}" th:text="${err}" />
+            </ul>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" th:field="*{password}" type="password"/>
+            <ul>
+                <li th:each="err : ${#fields.errors('password')}" th:text="${err}" />
+            </ul>
+        </div>
+        <div class="form-group">
+            <label for="passwordConfirmation">passwordConfirmation</label>
+            <input id="passwordConfirmation" th:field="*{passwordConfirmation}" type="password" />
+        </div>
+        <input type="submit" />
+    </form>
+</body>
+</html>
