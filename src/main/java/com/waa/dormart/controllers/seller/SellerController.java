@@ -29,16 +29,16 @@ public class SellerController {
         return "sellers/new";
     }
 
-    @PostMapping("register")
-    public String createSeller(
-            @Valid @ModelAttribute("user") User seller,
-            final BindingResult result,
-            Model model) throws Exception {
-        if (result.hasErrors()) {
-            model.addAttribute("user", seller);
-            return "sellers/new";
-        }
-        this.userService.register(seller, RoleEnum.SELLER);
-        return "redirect:/";
-    }
+//    @PostMapping("register")
+//    public String createSeller(
+//            @Valid @ModelAttribute("user") User seller,
+//            final BindingResult result,
+//            Model model) throws Exception {
+//        if (result.hasErrors()) {
+//            model.addAttribute("user", seller);
+//            return "sellers/new";
+//        }
+//        this.userService.register(seller, RoleEnum.SELLER);
+//        return "redirect:/";
+//    }
 }

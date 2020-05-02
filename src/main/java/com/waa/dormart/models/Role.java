@@ -7,7 +7,7 @@ import java.util.List;
 @Entity
 public class Role {
 
-    public static class RoleBuilder {
+    public static class RoleBuilder implements ModelBuilder<Role> {
         private Role role;
 
         public RoleBuilder() {
@@ -16,6 +16,11 @@ public class Role {
 
         public RoleBuilder withName(String name) {
             this.role.setName(name);
+            return this;
+        }
+
+        public RoleBuilder withFriendlyName(String friendlyName) {
+            role.setFriendlyName(friendlyName);
             return this;
         }
 
@@ -30,6 +35,9 @@ public class Role {
 
     @NotBlank
     private String name;
+
+    @NotBlank
+    private String friendlyName;
 
     @OneToMany(mappedBy = "role")
     private List<User> users;
@@ -56,6 +64,14 @@ public class Role {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public String getFriendlyName() {
+        return friendlyName;
+    }
+
+    public void setFriendlyName(String friendlyName) {
+        this.friendlyName = friendlyName;
     }
 
     public static RoleBuilder create() {

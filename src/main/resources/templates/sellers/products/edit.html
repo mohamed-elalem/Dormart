@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <form th:replace="sellers/products/product-form :: form(@{/seller/products/{id}/edit(id=${product.id})}, ${product})">
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -6,9 +6,11 @@ import com.waa.dormart.models.User;
 import java.util.List;
 
 public interface UserService {
-    User save(User user, RoleEnum roleEnum);
-    User register(User user, RoleEnum roleEnum);
+    User register(User user);
 
     List<User> findAllInactiveByRole(RoleEnum role);
+
+    List<User> findAllActiveByRole(RoleEnum role);
+
     void activateUser(Long id);
 }

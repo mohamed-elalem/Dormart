@@ -9,7 +9,7 @@
 </head>
 <body>
     <div sec:authorize="isAuthenticated()">
-        <p>Welcome <span th:text="${#authentication.getPrincipal().getUsername()}"></span> </p>
+        <p>Welcome <span th:text="${#authentication.getPrincipal().getName()}"></span> </p>
         <a th:href="@{/logout}">Logout</a>
     </div>
     <div sec:authorize="isAnonymous()">

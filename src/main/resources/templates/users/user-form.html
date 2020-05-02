@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="${action}" th:object="${user}" th:fragment="form(action, user)" method="post">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" name="name" id="name" th:field="*{name}">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input class="form-control" type="text" th:field="*{email}" id="email" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input class="form-control" type="password" th:field="*{password}" id="password" />
+        </div>
+        <div class="form-group">
+            <label for="passwordConfirmation">Password Confirmation</label>
+            <input type="password" class="form-control" name="passwordConfirmation" th:field="*{passwordConfirmation}" id="passwordConfirmation">
+        </div>
+        <div class="form-group">
+            <label for="role">Register as</label>
+            <select th:field="*{role}" class="form-control">
+                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.friendlyName}"></option>
+            </select>
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasErrors('*')}">
+            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <input type="submit" class="btn btn-outline-secondary float-right" value="Register user" />
+    </form>
+</body>
+</html>
