@@ -16,7 +16,7 @@
             <td th:text="${seller.name}"></td>
             <td th:text="${seller.email}"></td>
             <td>
-                <form th:action="@{/static/js/categories/admin/sellers/{id}/activate(id=${seller.id})}" method="post">
+                <form th:action="@{/admin/sellers/{id}/activate(id=${seller.id})}" method="post">
                     <input type="submit" value="Activate" />
                 </form>
             </td>

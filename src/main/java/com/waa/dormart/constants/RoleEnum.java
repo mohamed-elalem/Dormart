@@ -17,10 +17,13 @@ public enum RoleEnum {
         return this.role;
     }
 
+<<<<<<< HEAD
     public String roleFriendlyName() {
         return friendlyName;
     }
 
+=======
+>>>>>>> master
     public String toString() {
         return this.role;
     }
