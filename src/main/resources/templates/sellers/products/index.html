@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+</head>
+<body>
+    <div class="container">
+        <div class="row" th:each="product : ${products}" th:object="${product}">
+            <div class="col-10">
+                <a th:href="@{/seller/products/{id}(id=*{id})}" th:text="*{name}"></a>
+            </div>
+            <div class="col-2">
+                <form th:action="@{/seller/products/{id}/delete(id=*{id})}" method="post"></form>
+                <a th:href="@{/seller/products/{id}/edit(id=*{id})}"><i class="fas fa-edit text-primary"></i></a>
+                <a class="delete-product"><i class="fas fa-trash-alt text-danger"></i></a>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/seller/products/index.js}"></script>
+</body>
+</html>

@@ -9,6 +9,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @Order(1)
@@ -22,11 +24,8 @@ public class RoleSeed implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Arrays.asList(RoleEnum.values())
-            .forEach(role -> {
-                if (roleRepository.findByName(role.toString()).isEmpty()) {
-                    roleRepository.save(Role.create().withName(role.toString()).build());
-                }
-            });
+        Arrays.asList(RoleEnum.values()).forEach(role -> {
+            roleRepository.save(Role.create().withName(role.roleName()).withFriendlyName(role.roleFriendlyName()).build());
+        });
     }
 }

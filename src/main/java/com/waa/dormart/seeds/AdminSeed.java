@@ -1,5 +1,6 @@
 package com.waa.dormart.seeds;
 
+import com.github.javafaker.Faker;
 import com.waa.dormart.constants.RoleEnum;
 import com.waa.dormart.models.Role;
 import com.waa.dormart.models.User;
@@ -28,9 +29,10 @@ public class AdminSeed implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        Faker faker = new Faker();
         userRepository.save(User.create()
             .withEmail("admin@test.com")
-            .withName("Admin")
+            .withName(faker.name().fullName())
             .withPassword(passwordEncoder.encode("12345678"))
             .withRole(roleRepository.findByName(RoleEnum.ADMIN.toString()).get())
             .withEnabled(true)

@@ -31,17 +31,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User was not found");
         }
 
-        User user = userOptional.get();
+//        User user = userOptional.get();
 
-        boolean enabled = user.getEnabled();
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
-        return  new org.springframework.security.core.userdetails.User
-                (user.getEmail(),
-                        user.getPassword(), enabled, accountNonExpired,
-                        credentialsNonExpired, accountNonLocked,
-                        List.of(new SimpleGrantedAuthority(user.getRole().getName())));
+//        boolean enabled = user.getEnabled();
+//        boolean accountNonExpired = true;
+//        boolean credentialsNonExpired = true;
+//        boolean accountNonLocked = true;
+//        return  new org.springframework.security.core.userdetails.User
+//                (user.getEmail(),
+//                        user.getPassword(), enabled, accountNonExpired,
+//                        credentialsNonExpired, accountNonLocked,
+//                        List.of(new SimpleGrantedAuthority(user.getRole().getName())));
+
+        return userOptional.get();
 
     }
 

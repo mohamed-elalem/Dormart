@@ -21,28 +21,24 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
-    private RoleRepository roleRepository;
 
     public UserServiceImpl(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager,
-            RoleRepository roleRepository) {
+            AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-        this.roleRepository = roleRepository;
     }
 
     @Override
-    public User register(User user, RoleEnum roleEnum) {
+    public User register(User user) {
         UsernamePasswordAuthenticationToken authToken
                 = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(roleRepository.findByName(roleEnum.roleName()).get());
         user.setEnabled(true);
-        user = save(user, roleEnum);
+        user = userRepository.save(user);
 
         try {
             Authentication auth = authenticationManager.authenticate(authToken);
@@ -56,7 +52,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllInactiveByRole(RoleEnum role) {
-        return this.userRepository.findAllInactiveByRole(role.roleName());
+        return this.userRepository.findAllByRoleAndActive(role.roleName(), false);
+    }
+
+    @Override
+    public List<User> findAllActiveByRole(RoleEnum role) {
+        return this.userRepository.findAllByRoleAndActive(role.roleName(), true);
     }
 
     @Override
@@ -67,11 +68,5 @@ public class UserServiceImpl implements UserService {
             user.setActive(true);
             userRepository.save(user);
         }
-    }
-
-    @Override
-    public User save(User user, RoleEnum roleEnum) {
-        user = this.userRepository.save(user);
-        return user;
     }
 }

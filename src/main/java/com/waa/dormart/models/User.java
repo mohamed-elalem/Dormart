@@ -1,7 +1,12 @@
 package com.waa.dormart.models;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -9,11 +14,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
-public class User {
+public class User implements UserDetails {
 
-    public static class UserBuilder {
+    public static class UserBuilder implements ModelBuilder<User> {
         private User user;
 
         private UserBuilder() {
@@ -50,6 +57,11 @@ public class User {
             return this;
         }
 
+        public UserBuilder withActive(Boolean active) {
+            user.setActive(active);
+            return this;
+        }
+
         public User build() {
             return user;
         }
@@ -59,21 +71,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @NotBlank
-    @Size(max = 60)
+    @NotBlank(message = "{model.notBlank.error}")
+    @Size(min = 3, max = 60, message = "{model.size.error}")
     private String name;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "{model.notBlank.error}")
+    @Email(message = "{model.email.error}")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "{model.size.error}")
     private String password;
 
     @Transient
     private String passwordConfirmation;
 
-    @Size(min = 6, max = 80)
+    @Size(min = 6, max = 80, message = "{model.size.error}")
     @Transient
     private String rawPassword;
 
@@ -85,6 +97,10 @@ public class User {
 
     @NotNull
     private Boolean active;
+
+    @OneToMany
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Product> products;
 
     public User() {
         this.enabled = false;
@@ -115,8 +131,38 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(getRole().getName()));
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public void setPassword(String password) {
@@ -161,6 +207,14 @@ public class User {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public static UserBuilder create() {

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/1999/xhtml" xsi:schemaLocation="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/layout :: head">
+
+</head>
+<body>
+    <div class="container">
+        <div class="row" th:each="category: ${categories}" th:object="${category}">
+            <div class="col-3">
+                <a th:href="@{/static/js/categories/{id}(id=*{id})}" th:text="*{name}"></a>
+            </div>
+            <div class="col-7">
+                <p th:text="*{description}"></p>
+            </div>
+            <div class="col-1">
+                <div class="delete-category">
+                    <form th:action="@{/admin/categories/{id}/delete(id=*{id})}" th:method="post">
+
+                    </form>
+                    <i class="fas fa-trash-alt text-danger"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a th:href="@{/admin/categories/new}" class="btn btn-outline-primary float-right">Add new category</a>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/admin/categories/list.js}"></script>
+</body>
+</html>
