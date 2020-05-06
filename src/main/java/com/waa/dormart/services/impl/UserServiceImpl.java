@@ -2,7 +2,6 @@ package com.waa.dormart.services.impl;
 
 import com.waa.dormart.constants.RoleEnum;
 import com.waa.dormart.models.User;
-import com.waa.dormart.repositories.RoleRepository;
 import com.waa.dormart.repositories.UserRepository;
 import com.waa.dormart.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -68,5 +67,19 @@ public class UserServiceImpl implements UserService {
             user.setActive(true);
             userRepository.save(user);
         }
+    }
+
+    @Override
+    public void toggleFollow(Long followerId, Long followingId) {
+        User follower = userRepository.findById(followerId).get();
+        User following = userRepository.findById(followingId).get();
+
+        if (follower.isFollowing(following)) {
+            follower.getFollowing().remove(following);
+        } else {
+            follower.getFollowing().add(following);
+        }
+
+        userRepository.save(follower);
     }
 }

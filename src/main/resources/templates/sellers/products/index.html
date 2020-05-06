@@ -17,6 +17,11 @@
                 <a class="delete-product"><i class="fas fa-trash-alt text-danger"></i></a>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12">
+                <a th:href="@{/seller/products/new}" class="btn btn-primary float-right" th:if="${#authentication.principal.active}">Add new product</a>
+            </div>
+        </div>
     </div>
     <script th:src="@{/js/seller/products/index.js}"></script>
 </body>

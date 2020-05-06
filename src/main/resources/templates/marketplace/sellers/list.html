@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+</head>
+<body>
+    <div class="jumbotron">
+        <h3>Dormart sellers</h3>
+    </div>
+    <table class="table table-hover">
+        <tr th:each="seller : ${sellers}" th:object="${seller}">
+            <td><strong th:text="*{name}"></strong></td>
+            <td th:if="${seller.isFollowedBy(loggedInUser) == false}">
+                <span style="cursor: pointer;" class="follow-toggler" th:data-url="@{/marketplace/sellers/{id}/toggle-follow(id=*{id})}">
+                    <i class="fas fa-user-plus text-success"></i>
+                </span>
+            </td>
+            <td th:if="${seller.isFollowedBy(loggedInUser) == true}">
+                <span style="cursor: pointer;" class="follow-toggler" th:data-url="@{/marketplace/sellers/{id}/toggle-follow(id=*{id})}">
+                    <i class="fas fa-user-minus text-danger"></i>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <script th:src="@{/js/marketplace/sellers/list.js}"></script>
+</body>
+</html>

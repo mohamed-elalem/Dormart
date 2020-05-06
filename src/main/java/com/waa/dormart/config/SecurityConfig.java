@@ -41,9 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .and()
                 .formLogin().permitAll()
+                .and()
+                .rememberMe().key("Top secret key").tokenValiditySeconds(30 * 24 * 60 * 60)
 //                .loginPage("/login")
                 .and().csrf().ignoringAntMatchers("/h2-console/**")
-                .and().headers().frameOptions().sameOrigin();
+                .and().headers().frameOptions().sameOrigin()
+                .and().csrf().disable().cors();
     }
 
     @Bean

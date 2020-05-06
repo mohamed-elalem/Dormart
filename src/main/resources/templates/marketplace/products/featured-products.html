@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="jumbotron">
+    <h3>Products from sellers you follow</h3>
+</div>
+<div th:replace="marketplace/products/product-list :: productList(${products})"></div>
+</body>
+</html>

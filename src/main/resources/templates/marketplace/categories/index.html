@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+</head>
+<body>
+    <table class="table table-hover">
+        <tr th:each="category : ${categories}" th:object="${category}">
+            <td>
+                <a th:href="@{/marketplace/categories/{id}/products(id=*{id})}" th:text="*{name}"></a>
+            </td>
+            <td>
+                <p th:text="*{description}" class="text-muted"></p>
+            </td>
+            <td>
+                <p><span th:text="*{products.toArray().length}"></span> products</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

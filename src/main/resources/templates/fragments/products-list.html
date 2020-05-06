@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <div class="row" th:each="product : ${products}" th:object="${product}">
+        <div class="col-10">
+            <a th:href="@{/seller/products/{id}(id=*{id})}" th:text="*{name}"></a>
+        </div>
+        <div class="col-2">
+            <form th:action="@{/seller/products/{id}/delete(id=*{id})}" method="post"></form>
+            <a th:href="@{/seller/products/{id}/edit(id=*{id})}"><i class="fas fa-edit text-primary"></i></a>
+            <a class="delete-product"><i class="fas fa-trash-alt text-danger"></i></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <a th:href="@{/seller/products/new}" class="btn btn-primary float-right" th:if="${#authentication.principal.active}">Add new product</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
