@@ -14,8 +14,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class User implements UserDetails {
@@ -101,6 +100,18 @@ public class User implements UserDetails {
     @OneToMany
     @Fetch(FetchMode.SUBSELECT)
     private List<Product> products;
+
+    @ManyToMany(mappedBy = "following", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<User> followers = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name="following_follower",
+            joinColumns={@JoinColumn(name="follower_id")},
+            inverseJoinColumns={@JoinColumn(name="following_id")})
+    private Set<User> following = new HashSet<>();
+
+    @OneToMany(mappedBy = "reviewer")
+    private List<Review> reviews;
 
     public User() {
         this.enabled = false;
@@ -217,7 +228,54 @@ public class User implements UserDetails {
         this.products = products;
     }
 
+    public Set<User> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Set<User> following) {
+        this.following = following;
+    }
+
+    public Set<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<User> followers) {
+        this.followers = followers;
+    }
+
+    public Boolean isFollowing(User user) {
+        return getFollowing().contains(user);
+    }
+
+    public Boolean isFollowedBy(User user) {
+        return getFollowers().contains(user);
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return getId().equals(user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
     public static UserBuilder create() {
         return new UserBuilder();
     }
+
+
 }

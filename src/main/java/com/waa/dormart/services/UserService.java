@@ -13,4 +13,6 @@ public interface UserService {
     List<User> findAllActiveByRole(RoleEnum role);
 
     void activateUser(Long id);
+
+    void toggleFollow(Long followerId, Long followingId);
 }

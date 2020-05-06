@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:object="${product}">
+    <div class="jumbotron">
+        <h3 th:text="*{name}"></h3>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <h5 th:text="*{description}"></h5>
+            </div>
+            <div class="col-4">
+                <div class="card bg-primary text-light">
+                    <div class="card-body">
+                        <h5 class="card-title">Product information</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" th:if="*{quantity eq 0}">Not available</h6>
+                        <h6 class="card-subtitle mb-2 text-muted" th:if="*{quantity gt 0}"><span th:text="*{quantity}"></span> units available</h6>
+                        <p class="card-text"><strong>$<span th:text="*{#numbers.formatDecimal(price, 0, 'COMMA', 2, 'POINT')}"></span> / unit</strong></p>
+                        <button class="card-link btn btn-dark btn-block" data-toggle="modal" data-target="#add-to-cart">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">Reviews</h4>
+                    </div>
+                    <div class="comment-widgets">
+                        <!-- Comment Row -->
+                        <div th:each="review : ${reviews}" th:object="${review}" class="d-flex flex-row comment-row m-t-0">
+                            <div class="p-2"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1574583336/AAA/4.jpg" alt="user" width="50" class="rounded-circle"></div>
+                            <div class="comment-text w-100">
+                                <h6 class="font-medium" th:text="*{reviewer.name}">James Thomas</h6>
+                                <span class="m-b-15 d-block" th:text="*{content}">
+                                    This is awesome website. I would love to comeback again.
+                                </span>
+                                <div class="comment-footer pr-3"> <span class="text-muted float-right" th:text="*{createdAt}">April 14, 2019</span></div>
+                            </div>
+                        </div>
+                    </div> <!-- Card -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form th:action="@{/marketplace/products/{id}/add-review(id=${product.id})}" method="POST" th:object="${review}">
+                    <div class="form-group">
+                        <label for="content"></label>
+                        <textarea id="content" name="content" th:field="*{content}" class="form-control" rows="6" cols="10"></textarea>
+                    </div>
+
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasErrors('*')}">
+                        <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <input type="submit" value="Add new comment" class="btn btn-primary float-right">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="add-to-cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add to shopping cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/marketplace/cart/add-to-cart}">
+                        <input type="hidden" th:value="*{id}" name="product" />
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input id="quantity" type="number" th:data-delta="*{price}" name="quantity" class="form-control product-cart-price-field" value="0" min="0" th:max="*{quantity}" step="1" />
+                        </div>
+                    </form>
+                    <div>
+                        <p class="product-cart-price text-sm-center">$0.00</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Add to cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/marketplace/products/product-details.js}"></script>
+</body>
+</html>

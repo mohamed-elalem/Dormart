@@ -1,5 +1,8 @@
 package com.waa.dormart.models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -46,6 +49,7 @@ public class Category {
 
     @Valid
     @OneToMany(mappedBy = "category")
+    @Fetch(FetchMode.SUBSELECT)
     private List<Product> products;
 
     public Long getId() {

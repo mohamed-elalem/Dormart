@@ -1,9 +1,12 @@
 package com.waa.dormart.controllers.seller;
 
+import com.waa.dormart.exceptions.HttpException;
+import com.waa.dormart.exceptions.UnuthorizedException;
 import com.waa.dormart.models.Product;
 import com.waa.dormart.models.User;
 import com.waa.dormart.services.CategoryService;
 import com.waa.dormart.services.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,6 +59,9 @@ public class SellerProductController {
                        @Valid @ModelAttribute Product product,
                        BindingResult result,
                        Model model) {
+        if (!seller.getActive()) {
+            throw (HttpException) new UnuthorizedException(HttpStatus.UNAUTHORIZED, "You cannot post any product until the admin approves your account");
+        }
         product.setSeller(seller);
         if (result.hasErrors()) {
             model.addAttribute("categories", categoryService.findAll());

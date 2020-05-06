@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Reviewer</th>
+                <th>Review Content</th>
+                <th>Approve</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="review : ${reviews}" th:object="${review}">
+                <td>
+                    <strong th:text="${review.product.name}"></strong>
+                </td>
+                <td>
+                    <strong th:text="${review.reviewer.name}"></strong>
+                </td>
+                <td th:text="${review.content}"></td>
+                <td>
+                    <i class="fa fa-check text-success approve-review" style="cursor: pointer;"></i>
+                    <form th:action="@{/admin/pending-reviews/{id}/approve(id=*{id})}" method="post"></form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script th:src="@{/js/admin/reviews/pending-list.js}"></script>
+</body>
+</html>

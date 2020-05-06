@@ -7,6 +7,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Product {
@@ -82,6 +84,14 @@ public class Product {
     @ManyToOne
     private Category category;
 
+    @OneToMany(mappedBy = "product")
+    private List<Review> reviews;
+
+    public Product() {
+        reviews = new ArrayList<>();
+
+    }
+
     public Long getId() {
         return id;
     }
@@ -136,6 +146,14 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public static ProductBuilder create() {

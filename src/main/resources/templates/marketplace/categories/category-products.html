@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+</head>
+<body>
+    <div class="jumbotron">
+        <h3 th:text="${category.name}"></h3>
+        <p class="text-muted" th:text="${category.description}"></p>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h4><span th:text="${category.products.size()}"></span> found</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3" th:each="product : ${category.products}" th:object="${product}">
+                <div class="card">
+                    <img class="card-img-top" src="https://via.placeholder.com/200" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="*{name}"></h5>
+                        <p class="card-text text-muted" th:text="*{description}"></p>
+                        <a th:href="@{/marketplace/products/{id}(id=*{id})}" class="btn btn-outline-primary">Visit now</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
