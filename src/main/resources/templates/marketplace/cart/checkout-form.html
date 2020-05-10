@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="container">
+        <div th:replace="marketplace/cart/index :: items"></div>
+        <hr>
+        <div class="row">
+            <div class="col-8 offset-2">
+                <form th:object="${orderInfo}" th:action="@{/marketplace/cart/checkout}" th:method="post">
+                    <div class="form-group">
+                        <label for="card-number">Card Number</label>
+                        <input type="text" class="form-control" th:field="*{cardNumber}" id="card-number" />
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" class="form-control" th:field="*{cvv}" id="cvv" />
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" th:field="*{city}" id="city" />
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" class="form-control" th:field="*{state}" id="state" />
+                    </div>
+                    <div class="form-group">
+                        <label for="zipcode">Zipcode</label>
+                        <input type="text" class="form-control" th:field="*{zipcode}" id="zipcode" />
+                    </div>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasErrors('*')}">
+                        <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <input type="submit" value="Confirm checkout" class="btn btn-block btn-success" />
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

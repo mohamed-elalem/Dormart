@@ -1,15 +1,14 @@
 package com.waa.dormart.models;
 
+import com.waa.dormart.validations.annotations.PasswordConfirmationMatch;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,6 +16,7 @@ import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
+@PasswordConfirmationMatch
 public class User implements UserDetails {
 
     public static class UserBuilder implements ModelBuilder<User> {
@@ -84,7 +84,6 @@ public class User implements UserDetails {
     @Transient
     private String passwordConfirmation;
 
-    @Size(min = 6, max = 80, message = "{model.size.error}")
     @Transient
     private String rawPassword;
 
@@ -113,9 +112,18 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "reviewer")
     private List<Review> reviews;
 
+    private Double points;
+
+    @OneToMany(mappedBy = "buyer")
+    private List<ShoppingOrder> boughtShoppingOrders;
+
+    @OneToMany(mappedBy = "seller")
+    private List<ShoppingOrder> soldShoppingOrders;
+
     public User() {
         this.enabled = false;
         this.active = false;
+        this.points = 0.0;
     }
 
     public Long getId() {
@@ -277,5 +285,27 @@ public class User implements UserDetails {
         return new UserBuilder();
     }
 
+    public Double getPoints() {
+        return points;
+    }
 
+    public void setPoints(Double points) {
+        this.points = points;
+    }
+
+    public List<ShoppingOrder> getBoughtShoppingOrders() {
+        return boughtShoppingOrders;
+    }
+
+    public void setBoughtShoppingOrders(List<ShoppingOrder> boughtShoppingOrders) {
+        this.boughtShoppingOrders = boughtShoppingOrders;
+    }
+
+    public List<ShoppingOrder> getSoldShoppingOrders() {
+        return soldShoppingOrders;
+    }
+
+    public void setSoldShoppingOrders(List<ShoppingOrder> soldShoppingOrders) {
+        this.soldShoppingOrders = soldShoppingOrders;
+    }
 }

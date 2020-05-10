@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3>Your shoppingOrders</h3>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-pills nav-justified">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#pending-shoppingOrders">Pending Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#delivered-shoppingOrders">Delivered Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#returned-shoppingOrders">Returned Orders</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane" id="pending-shoppingOrders">
+            <div th:each="shoppingOrder : ${pendingOrders}" th:object="${shoppingOrder}">
+                <h4>Order from <span class="text-muted" th:text="*{seller.name}"></span></h4>
+                <p>Order status: <span th:text="*{orderStatus.status}"></span></p>
+                <form th:action="@{/marketplace/orders/{id}/cancel(id=*{id})}" method="post" th:if="*{orderStatus.status.equals('PENDING')}">
+                    <input type="submit" class="btn btn-danger" value="Cancel">
+                </form>
+                <h4>Products</h4>
+                <div class="container">
+                    <div class="row" th:each="item : ${shoppingOrder.items}" th:object="${item}">
+                        <div class="col-12">
+                            <hr>
+                            <a th:href="@{/marketplace/products/{id}(id=*{product.id})}" th:text="*{product.name}"></a>
+                            <p><span th:text="*{quantity}"></span> units</p>
+                            <p>$<span th:text="*{product.price}"></span>/unit</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>Total: $<span th:text="*{price}"></span></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="delivered-shoppingOrders">
+            <div class="container">
+                <div class="row" th:each="order : ${deliveredOrders}" th:object="${order}" >
+                    <div class="col-3">
+                        <p>From <span th:text="*{seller.name}"></span></p>
+                    </div>
+                    <div class="col-6"><span th:text="*{items.size()}"></span> items in this order</div>
+                    <div class="col-3">$<span th:text="*{price}"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="returned-shoppingOrders">
+            <div class="container">
+                <div class="row" th:each="order : ${returnedOrders}" th:object="${order}" >
+                    <div class="col-3">
+                        <p>From <span th:text="*{seller.name}"></span></p>
+                    </div>
+                    <div class="col-6"><span th:text="*{items.size()}"></span> items in this order</div>
+                    <div class="col-3">$<span th:text="*{price}"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

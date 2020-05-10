@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <h3>Shopping cart</h3>
+    </div>
+
+    <div class="container">
+        <div th:fragment="items" class="row" th:each="item, index : ${cart.items}" th:object="${item}">
+            <div class="col-2">
+                <img src="https://via.placeholder.com/100" />
+            </div>
+            <div class="col-8">
+                <p>Name: <span th:text="*{product.name}"></span></p>
+                <p>Quantity: <span th:text="*{quantity}"></span></p>
+                <p>Price: $<span th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 2, 'POINT')}"></span></p>
+            </div>
+            <div class="col-2">
+                <form th:action="@{/marketplace/cart/{index}/remove(index=${index.index})}" method="post">
+                    <input type="submit" class="btn btn-danger" value="Remove from cart">
+                </form>
+            </div>
+        </div>
+        <div class="row" th:if="${cart ne null and cart.items.size() gt 0}">
+            <div class="col-12" th:if="${discountedPrice eq null}">
+                <h4 class="float-right">Total Price: $<span th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 2, 'POINT')}"></span></h4>
+            </div>
+
+            <div class="col-12" th:if="${discountedPrice ne null}">
+                <h4 class="float-right">Total Price: $<span style="text-decoration: line-through;" th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 2, 'POINT')}"></span> <span th:text="${#numbers.formatDecimal(discountedPrice, 0, 'COMMA', 2, 'POINT')}"></span></h4>
+            </div>
+        </div>
+        <div class="row" th:if="${cart ne null and cart.items.size() gt 0}">
+            <div class="col-12">
+                <a th:href="@{/marketplace/cart/checkout}" class="btn btn-primary btn-lg float-right">Checkout</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
