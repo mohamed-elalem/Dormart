@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-pills nav-justified">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#pending-orders">Pending Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#shipped-orders">Shipped Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#on-the-way-orders">On The Way Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#delivered-orders">Delivered Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#returned-orders">Returned Orders</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div id="pending-orders" class="tab-pane container">
+            <div class="row">
+                <div th:each="order : ${pendingOrders}" th:object="${order}">
+                    <h4>Order from <span class="text-muted" th:text="*{seller.name}"></span></h4>
+                    <p>Order status: <span th:text="*{orderStatus.status}"></span></p>
+                    <form th:action="@{/seller/orders/{id}/ship(id=*{id})}" method="post">
+                        <input type="submit" class="btn btn-light" value="Ship order">
+                    </form>
+                    <form th:action="@{/seller/orders/{id}/cancel(id=*{id})}" method="post">
+                        <input type="submit" class="btn btn-danger" value="Cancel order">
+                    </form>
+                    <h4>Products</h4>
+                    <div class="container">
+                        <div class="row" th:each="item : *{items}" th:object="${item}">
+                            <div class="col-12">
+                                <hr>
+                                <a th:href="@{/marketplace/products/{id}(id=*{product.id})}" th:text="*{product.name}"></a>
+                                <p><span th:text="*{quantity}"></span> units</p>
+                                <p>$<span th:text="*{product.price}"></span>/unit</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h4>Total: $<span th:text="*{price}"></span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="shipped-orders" class="tab-pane container">
+            <div class="row">
+                <div th:each="order : ${shippedOrders}" th:object="${order}">
+                    <h4>Order from <span class="text-muted" th:text="*{seller.name}"></span></h4>
+                    <p>Order status: <span th:text="*{orderStatus.status}"></span></p>
+                    <form th:action="@{/seller/orders/{id}/dispatch(id=*{id})}" method="post">
+                        <input type="submit" class="btn btn-secondary" value="Order is on the way">
+                    </form>
+                    <form th:action="@{/seller/orders/{id}/cancel(id=*{id})}" method="post">
+                        <input type="submit" class="btn btn-danger" value="Cancel order">
+                    </form>
+                    <h4>Products</h4>
+                    <div class="container">
+                        <div class="row" th:each="item : *{items}" th:object="${item}">
+                            <div class="col-12">
+                                <hr>
+                                <a th:href="@{/marketplace/products/{id}(id=*{product.id})}" th:text="*{product.name}"></a>
+                                <p><span th:text="*{quantity}"></span> units</p>
+                                <p>$<span th:text="*{product.price}"></span>/unit</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h4>Total: $<span th:text="*{price}"></span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="on-the-way-orders" class="tab-pane container">
+            <div class="row">
+                <div th:each="order : ${onTheWayOrders}" th:object="${order}">
+                    <h4>Order from <span class="text-muted" th:text="*{seller.name}"></span></h4>
+                    <p>Order status: <span th:text="*{orderStatus.status}"></span></p>
+                    <form th:action="@{/seller/orders/{id}/deliver(id=*{id})}" method="post">
+                        <input type="submit" class="btn btn-success" value="Deliver order">
+                    </form>
+                    <form th:action="@{/seller/orders/{id}/cancel(id=*{id})}" method="post">
+                        <input type="submit" class="btn btn-danger" value="Cancel order">
+                    </form>
+                    <h4>Products</h4>
+                    <div class="container">
+                        <div class="row" th:each="item : *{items}" th:object="${item}">
+                            <div class="col-12">
+                                <hr>
+                                <a th:href="@{/marketplace/products/{id}(id=*{product.id})}" th:text="*{product.name}"></a>
+                                <p><span th:text="*{quantity}"></span> units</p>
+                                <p>$<span th:text="*{product.price}"></span>/unit</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h4>Total: $<span th:text="*{price}"></span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="delivered-orders" class="tab-pane container">
+            <div class="row">
+                <div th:each="order : ${deliveredOrders}" th:object="${order}">
+                    <h4>Order from <span class="text-muted" th:text="*{seller.name}"></span></h4>
+                    <p>Order status: <span th:text="*{orderStatus.status}"></span></p>
+                    <p>Delivered At: <span th:text="*{updatedAt}"></span></p>
+                    <h4>Products</h4>
+                    <div class="container">
+                        <div class="row" th:each="item : *{items}" th:object="${item}">
+                            <div class="col-12">
+                                <hr>
+                                <a th:href="@{/marketplace/products/{id}(id=*{product.id})}" th:text="*{product.name}"></a>
+                                <p><span th:text="*{quantity}"></span> units</p>
+                                <p>$<span th:text="*{product.price}"></span>/unit</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h4>Total: $<span th:text="*{price}"></span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="returned-orders" class="tab-pane container">
+            <div class="row">
+                <div th:each="order : ${onTheWayOrders}" th:object="${order}">
+                    <h4>Order from <span class="text-muted" th:text="*{seller.name}"></span></h4>
+                    <p>Order status: <span th:text="*{orderStatus.status}"></span></p>
+                    <p>Returned At: <span th:text="*{updatedAt}"></span></p>
+                    <h4>Products</h4>
+                    <div class="container">
+                        <div class="row" th:each="item : *{items}" th:object="${item}">
+                            <div class="col-12">
+                                <hr>
+                                <a th:href="@{/marketplace/products/{id}(id=*{product.id})}" th:text="*{product.name}"></a>
+                                <p><span th:text="*{quantity}"></span> units</p>
+                                <p>$<span th:text="*{product.price}"></span>/unit</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h4>Total: $<span th:text="*{price}"></span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

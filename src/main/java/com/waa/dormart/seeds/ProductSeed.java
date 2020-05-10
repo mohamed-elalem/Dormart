@@ -28,18 +28,30 @@ public class ProductSeed implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        User seller = userRepository.findAllByRoleAndActive(RoleEnum.SELLER.roleName(), true).get(0);
+        User seller1 = userRepository.findAllByRoleAndActive(RoleEnum.SELLER.roleName(), true).get(0);
+        User seller2 = userRepository.findAllByRoleAndActive(RoleEnum.SELLER.roleName(), true).get(1);
         Category category = categoryRepository.findAll().get(0);
         Faker faker = new Faker();
         for (int i = 0; i < 10; i++) {
             productRepository.save(Product.create()
                 .withName(faker.book().title())
                 .withDescription(faker.hitchhikersGuideToTheGalaxy().marvinQuote())
-                .withSeller(seller)
+                .withSeller(seller1)
                 .withPrice(faker.number().randomDouble(4, 0, 9999))
                 .withQuantity(faker.random().nextInt(300) + 1)
                 .withCategory(category)
                 .build());
+        }
+
+        for (int i = 0; i < 4; i++) {
+            productRepository.save(Product.create()
+                    .withName(faker.book().title())
+                    .withDescription(faker.hitchhikersGuideToTheGalaxy().marvinQuote())
+                    .withSeller(seller2)
+                    .withPrice(faker.number().randomDouble(4, 0, 9999))
+                    .withQuantity(faker.random().nextInt(300) + 1)
+                    .withCategory(category)
+                    .build());
         }
     }
 }

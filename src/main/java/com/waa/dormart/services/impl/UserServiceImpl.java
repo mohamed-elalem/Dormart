@@ -1,7 +1,9 @@
 package com.waa.dormart.services.impl;
 
 import com.waa.dormart.constants.RoleEnum;
+import com.waa.dormart.models.ShoppingOrder;
 import com.waa.dormart.models.User;
+import com.waa.dormart.repositories.ShoppingOrderRepository;
 import com.waa.dormart.repositories.UserRepository;
 import com.waa.dormart.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,14 +22,17 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
+    private ShoppingOrderRepository shoppingOrderRepository;
 
     public UserServiceImpl(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager) {
+            AuthenticationManager authenticationManager,
+            ShoppingOrderRepository shoppingOrderRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.shoppingOrderRepository = shoppingOrderRepository;
     }
 
     @Override
@@ -81,5 +86,20 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.save(follower);
+    }
+
+    @Override
+    public void addPurchasePoints(Long orderId) {
+        ShoppingOrder order = shoppingOrderRepository.getOne(orderId);
+        User buyer = order.getBuyer();
+        Double deductedPoints = Math.min(order.getPrice(), Math.floor(buyer.getPoints()));
+        Double newPrice = order.getPrice() - deductedPoints;
+        buyer.setPoints(buyer.getPoints() - deductedPoints + newPrice / 100);
+        userRepository.save(buyer);
+    }
+
+    @Override
+    public User getUser(Long userId) {
+        return userRepository.getOne(userId);
     }
 }

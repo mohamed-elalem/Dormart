@@ -42,5 +42,14 @@ public class SellerSeed implements ApplicationRunner {
                 .withEnabled(true)
                 .withActive(false)
                 .build());
+
+        userRepository.save(User.create()
+                .withEmail("seller+active2@test.com")
+                .withName("Active Seller 2")
+                .withPassword(passwordEncoder.encode("12345678"))
+                .withRole(roleRepository.findByName(RoleEnum.SELLER.toString()).get())
+                .withEnabled(true)
+                .withActive(true)
+                .build());
     }
 }

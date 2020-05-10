@@ -20,7 +20,7 @@
                         <h6 class="card-subtitle mb-2 text-muted" th:if="*{quantity eq 0}">Not available</h6>
                         <h6 class="card-subtitle mb-2 text-muted" th:if="*{quantity gt 0}"><span th:text="*{quantity}"></span> units available</h6>
                         <p class="card-text"><strong>$<span th:text="*{#numbers.formatDecimal(price, 0, 'COMMA', 2, 'POINT')}"></span> / unit</strong></p>
-                        <button class="card-link btn btn-dark btn-block" data-toggle="modal" data-target="#add-to-cart">Add to cart</button>
+                        <button class="card-link btn btn-dark btn-block" data-toggle="modal" data-target="#add-to-cart" th:if="*{quantity gt 0}">Add to cart</button>
                     </div>
                 </div>
             </div>
@@ -81,22 +81,22 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form th:action="@{/marketplace/cart/add-to-cart}">
-                        <input type="hidden" th:value="*{id}" name="product" />
-                        <div class="form-group">
-                            <label for="quantity">Quantity</label>
-                            <input id="quantity" type="number" th:data-delta="*{price}" name="quantity" class="form-control product-cart-price-field" value="0" min="0" th:max="*{quantity}" step="1" />
+                <form th:action="@{/marketplace/cart/add-product}" method="post">
+                    <div class="modal-body">
+                            <input type="hidden" th:value="*{id}" name="productId" />
+                            <div class="form-group">
+                                <label for="quantity">Quantity</label>
+                                <input id="quantity" type="number" th:data-delta="*{price}" name="quantity" class="form-control product-cart-price-field" value="0" min="0" th:max="*{quantity}" step="1" />
+                            </div>
+                        <div>
+                            <p>Price: <span class="product-cart-price ">$0.00</span></p>
                         </div>
-                    </form>
-                    <div>
-                        <p class="product-cart-price text-sm-center">$0.00</p>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Add to cart</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add to cart</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

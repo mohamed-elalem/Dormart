@@ -3,10 +3,7 @@ package com.waa.dormart.models;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +66,7 @@ public class Product {
     private String description;
 
 
-    @Positive(message = "{model.positive.error}")
+    @DecimalMin(value =  "0", message = "{model.decimalMin.error}")
     @NotNull(message = "{model.notNull.error}")
     private Integer quantity;
 

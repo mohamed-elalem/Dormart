@@ -15,4 +15,8 @@ public interface UserService {
     void activateUser(Long id);
 
     void toggleFollow(Long followerId, Long followingId);
+
+    void addPurchasePoints(Long orderId);
+
+    User getUser(Long userId);
 }
