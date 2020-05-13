@@ -1,5 +1,6 @@
 package com.waa.dormart.controllers.buyer;
 
+import com.waa.dormart.dto.CartProductDTO;
 import com.waa.dormart.models.Product;
 import com.waa.dormart.models.Review;
 import com.waa.dormart.models.User;
@@ -26,9 +27,13 @@ public class BuyerProductController {
     }
 
     @GetMapping("{id}")
-    public String productDetails(@PathVariable Long id, Model model, @ModelAttribute Review review) {
+    public String productDetails(@PathVariable Long id,
+                                 Model model,
+                                 @ModelAttribute Review review,
+                                 @ModelAttribute("cartProduct") CartProductDTO cartProduct,
+                                 @AuthenticationPrincipal User buyer) {
         model.addAttribute("product", productService.getProductById(id));
-        model.addAttribute("reviews", reviewService.getApprovedReviews());
+        model.addAttribute("reviews", reviewService.getApprovedProductReviews(id));
         return "marketplace/products/product-details";
     }
 
@@ -50,11 +55,14 @@ public class BuyerProductController {
                                      Model model,
                                      RedirectAttributes redirectAttributes,
                                      @PathVariable("id") Long productId,
+                                     @ModelAttribute("cartProduct") CartProductDTO cartProduct,
                                      @AuthenticationPrincipal User loggedInUser) {
         review.setReviewer(loggedInUser);
 
         if (result.hasErrors()) {
             model.addAttribute("review", review);
+            model.addAttribute("product", productService.getProductById(productId));
+            model.addAttribute("reviews", reviewService.getApprovedProductReviews(productId));
             return "marketplace/products/product-details";
         }
 

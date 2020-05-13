@@ -2,13 +2,13 @@ package com.waa.dormart.models;
 
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Product {
+public class Product implements Serializable {
 
     public static class ProductBuilder implements ModelBuilder<Product> {
         private Product product;
@@ -84,6 +84,8 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Review> reviews;
 
+    private String image;
+
     public Product() {
         reviews = new ArrayList<>();
 
@@ -155,5 +157,13 @@ public class Product {
 
     public static ProductBuilder create() {
         return new ProductBuilder();
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

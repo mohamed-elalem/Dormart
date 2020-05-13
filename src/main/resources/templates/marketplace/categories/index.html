@@ -3,10 +3,11 @@
 <head th:replace="fragments/layout :: head">
 </head>
 <body>
+    <nav th:replace="fragments/layout :: header"></nav>
     <table class="table table-hover">
         <tr th:each="category : ${categories}" th:object="${category}">
             <td>
-                <a th:href="@{/marketplace/categories/{id}/products(id=*{id})}" th:text="*{name}"></a>
+                <a th:href="@{/marketplace/categories/{id}(id=*{id})}" th:text="*{name}"></a>
             </td>
             <td>
                 <p th:text="*{description}" class="text-muted"></p>
@@ -16,5 +17,6 @@
             </td>
         </tr>
     </table>
+    <footer th:replace="fragments/layout :: footer"></footer>
 </body>
 </html>

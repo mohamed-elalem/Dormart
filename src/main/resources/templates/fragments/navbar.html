@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul class="navbar-nav mr-auto" th:fragment="guestMenu">
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/marketplace/categories}">Categories</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/marketplace/products}">Products</a>
+    </li>
+</ul>
+<ul class="navbar-nav mr-auto" th:fragment="buyerMenu">
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/marketplace/categories}">Categories</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/marketplace/products}">Products</a>
+    </li>
+    <li class="nav-item">
+        <a th:href="@{/marketplace/sellers}" class="nav-link">Sellers</a>
+    </li>
+    <li class="nav-item">
+        <a th:href="@{/marketplace/products/featured}" class="nav-link">Featured Products</a>
+    </li>
+    <li class="nav-item">
+        <a th:href="@{/marketplace/cart}" class="nav-link">Cart</a>
+    </li>
+</ul>
+<ul class="navbar-nav mr-auto" th:fragment="sellerMenu">
+    <li class="nav-item">
+        <a th:href="@{/seller/products}" class="nav-link">Products</a>
+    </li>
+    <li class="nav-item">
+        <a th:href="@{/seller/orders}" class="nav-link">Orders</a>
+    </li>
+</ul>
+<ul class="navbar-nav mr-auto" th:fragment="adminMenu">
+    <li class="nav-item">
+        <a th:href="@{/admin/categories}" class="nav-link">Categories</a>
+    </li>
+    <li class="nav-item">
+        <a th:href="@{/admin/sellers}" class="nav-link">Sellers Activation Requests</a>
+    </li>
+    <li class="nav-item">
+        <a th:href="@{/admin/pending-reviews}" class="nav-link">Pending Review Requests</a>
+    </li>
+</ul>
+</body>
+</html>

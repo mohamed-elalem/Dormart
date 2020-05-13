@@ -96,6 +96,8 @@ public class UserServiceImpl implements UserService {
         Double newPrice = order.getPrice() - deductedPoints;
         buyer.setPoints(buyer.getPoints() - deductedPoints + newPrice / 100);
         userRepository.save(buyer);
+        order.setPrice(newPrice);
+        shoppingOrderRepository.save(order);
     }
 
     @Override

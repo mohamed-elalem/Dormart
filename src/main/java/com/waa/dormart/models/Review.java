@@ -47,7 +47,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 6, max = 500)
+    @Size(min = 6, max = 500, message = "{model.size.error}")
     private String content;
 
     @NotNull

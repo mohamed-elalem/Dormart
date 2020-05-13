@@ -3,6 +3,7 @@
 <head th:replace="fragments/layout :: head">
 </head>
 <body>
+    <nav th:replace="fragments/layout :: header"></nav>
     <div class="jumbotron">
         <h3>Dormart sellers</h3>
     </div>
@@ -21,6 +22,7 @@
             </td>
         </tr>
     </table>
+    <footer th:replace="fragments/layout :: footer"></footer>
     <script th:src="@{/js/marketplace/sellers/list.js}"></script>
 </body>
 </html>

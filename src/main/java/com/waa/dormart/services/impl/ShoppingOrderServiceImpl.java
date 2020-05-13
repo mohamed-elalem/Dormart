@@ -99,4 +99,9 @@ public class ShoppingOrderServiceImpl implements ShoppingOrderService {
     public ShoppingOrder getOrderById(Long id) {
         return shoppingOrderRepository.getOne(id);
     }
+
+    @Override
+    public List<ShoppingOrder> getDeliveredProductOrders(Long productId) {
+        return shoppingOrderRepository.findAllByProductIdAnAndOrderStatus(productId, OrderStatusEnum.DELIVERED.name());
+    }
 }

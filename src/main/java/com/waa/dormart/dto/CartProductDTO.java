@@ -1,8 +1,13 @@
 package com.waa.dormart.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 public class CartProductDTO {
     private Long productId;
 
+    @NotNull(message = "{model.notNull.error}")
+    @Positive(message = "{model.positive.error}")
     private Integer quantity;
 
     public Long getProductId() {

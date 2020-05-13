@@ -5,9 +5,11 @@
     <title>Title</title>
 </head>
 <body>
+    <nav th:replace="fragments/layout :: header"></nav>
     <div class="jumbotron">
         <h3>Products from dormart sellers</h3>
     </div>
     <div th:replace="marketplace/products/product-list :: productList(${products})"></div>
+    <footer th:replace="fragments/layout :: footer"></footer>
 </body>
 </html>

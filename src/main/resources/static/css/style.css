@@ -1,0 +1,44 @@
+.comment-row {
+    padding-left: 10px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1));
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.comment-footer {
+    font-size: 75%;
+    color: #1e2b37;
+    font-weight: 700;
+}
+
+.seller-product {
+    margin-bottom: 15px;
+    border: 1px dashed black;
+    padding: 15px;
+    border-radius: 3rem;
+    border-color: #9f9f9f;
+}
+
+.seller-product a:hover {
+    text-decoration: none;
+}
+
+.order-tabs {
+    margin-bottom: 3vh;
+}
+
+.shopping-order-card {
+    border: 1px dashed #9f9f9f;
+    padding: 15px;
+    border-radius: 1rem;
+    margin-bottom: 15px;
+}
+
+.order-products {
+    border: 1px dashed #9f9f9f;
+    padding: 15px;
+    border-radius: 1rem;
+    margin-bottom: 15px;
+}

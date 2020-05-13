@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    background-color: #efefef;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    overflow: auto;
+    padding-bottom: 25vh;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    height: 20vh;
+    margin-top: 15px;
+    text-align: center;
+    background-color: #1a252f;
+    width: 100%;
+    color: white;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+}
+
+footer .footer {
+    height: 100%;
+    padding-top: 15px;
+}
+
+nav {
+    margin-bottom: 15px;
+}

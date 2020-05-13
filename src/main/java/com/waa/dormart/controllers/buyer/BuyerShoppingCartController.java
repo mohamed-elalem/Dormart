@@ -5,7 +5,9 @@ import com.waa.dormart.dto.CartProductDTO;
 import com.waa.dormart.dto.OrderInformationDTO;
 import com.waa.dormart.models.Item;
 import com.waa.dormart.models.Product;
+import com.waa.dormart.models.Review;
 import com.waa.dormart.models.User;
+import com.waa.dormart.services.ReviewService;
 import com.waa.dormart.services.ShoppingOrderService;
 import com.waa.dormart.services.ProductService;
 import com.waa.dormart.services.UserService;
@@ -27,17 +29,33 @@ public class BuyerShoppingCartController {
     private ProductService productService;
     private ShoppingOrderService shoppingOrderService;
     private UserService userService;
+    private ReviewService reviewService;
 
     public BuyerShoppingCartController(ProductService productService,
                                        ShoppingOrderService shoppingOrderService,
-                                       UserService userService) {
+                                       UserService userService,
+                                       ReviewService reviewService) {
         this.productService = productService;
         this.shoppingOrderService = shoppingOrderService;
         this.userService = userService;
+        this.reviewService = reviewService;
     }
 
     @PostMapping("add-product")
-    public String addProduct(CartProductDTO cartProduct, HttpSession httpSession, Model model) {
+    public String addProduct(@Valid @ModelAttribute("cartProduct") CartProductDTO cartProduct,
+                             BindingResult result,
+                             HttpSession httpSession,
+                             Model model,
+                             @AuthenticationPrincipal User buyer) {
+
+        Product product = productService.getProductById(cartProduct.getProductId());
+
+        if (result.hasErrors()) {
+            model.addAttribute("product", product);
+            model.addAttribute("reviews", reviewService.getApprovedProductReviews(product.getId()));
+            model.addAttribute("review", Review.create().build());
+            return "marketplace/products/product-details";
+        }
         CartDTO cart;
         if (httpSession.getAttribute("cart") == null) {
             cart = new CartDTO();
@@ -45,7 +63,6 @@ public class BuyerShoppingCartController {
             cart = (CartDTO) httpSession.getAttribute("cart");
         }
 
-        Product product = productService.getProductById(cartProduct.getProductId());
 
         Item item = Item.create()
                 .withProduct(product)
@@ -80,12 +97,15 @@ public class BuyerShoppingCartController {
                 .map(item -> item.getQuantity() * item.getProduct().getPrice())
                 .reduce(0.0, (total, price) -> total + price);
 
-        User buyer = userService.getUser(loggedInUser.getId());
         model.addAttribute("totalPrice", totalPrice);
-        if (buyer.getPoints().longValue() > 0) {
-            Double discountedPrice = totalPrice - Math.min(buyer.getPoints(), totalPrice);
-            model.addAttribute("discountedPrice", discountedPrice);
+        if (loggedInUser != null) {
+            User buyer = userService.getUser(loggedInUser.getId());
+            if (buyer.getPoints().longValue() > 0) {
+                Double discountedPrice = totalPrice - Math.min(buyer.getPoints(), totalPrice);
+                model.addAttribute("discountedPrice", discountedPrice);
+            }
         }
+
         return "marketplace/cart/index";
     }
 

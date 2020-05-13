@@ -6,8 +6,9 @@
 <head th:replace="fragments/layout :: head">
 </head>
 <body>
+    <nav th:replace="fragments/layout :: header"></nav>
     <div class="container">
-        <div class="row" th:each="product : ${products}" th:object="${product}">
+        <div class="row seller-product" th:each="product : ${products}" th:object="${product}">
             <div class="col-10">
                 <a th:href="@{/seller/products/{id}(id=*{id})}" th:text="*{name}"></a>
             </div>
@@ -18,11 +19,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
-                <a th:href="@{/seller/products/new}" class="btn btn-primary float-right" th:if="${#authentication.principal.active}">Add new product</a>
+            <div class="col-12 text-center">
+                <a th:href="@{/seller/products/new}" class="btn btn-primary" th:if="${#authentication.principal.active}">Add new product</a>
             </div>
         </div>
     </div>
+    <footer th:replace="fragments/layout :: footer"></footer>
     <script th:src="@{/js/seller/products/index.js}"></script>
 </body>
 </html>

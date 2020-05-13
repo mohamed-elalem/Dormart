@@ -6,13 +6,74 @@
 <head th:fragment="head">
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" rel="stylesheet" />
     <link th:href="@{/css/bootstrap/bootstrap.min.css}" rel="stylesheet" />
     <link th:href="@{/webjars/font-awesome/5.13.0/css/all.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/layout.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
     <script th:src="@{/webjars/jquery/3.5.0/jquery.min.js}" ></script>
     <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}" ></script>
 </head>
 <body>
 
+<nav class="navbar navbar-expand-lg navbar-light bg-secondary" th:fragment="header">
+    <a class="navbar-brand" th:href="@{/}">Dormart</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+<!--        <ul class="navbar-nav mr-auto">-->
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" href="#">Link</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item dropdown">-->
+<!--                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                    Dropdown-->
+<!--                </a>-->
+<!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                    <a class="dropdown-item" href="#">Action</a>-->
+<!--                    <a class="dropdown-item" href="#">Another action</a>-->
+<!--                    <div class="dropdown-divider"></div>-->
+<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link disabled" href="#">Disabled</a>-->
+<!--            </li>-->
+<!--        </ul>-->
+        <ul th:replace="fragments/navbar :: guestMenu" sec:authorize="isAnonymous()"></ul>
+        <ul th:replace="fragments/navbar :: buyerMenu" sec:authorize="hasRole('ROLE_BUYER')"></ul>
+        <ul th:replace="fragments/navbar :: sellerMenu" sec:authorize="hasRole('ROLE_SELLER')"></ul>
+        <ul th:replace="fragments/navbar :: adminMenu" sec:authorize="hasRole('ROLE_ADMIN')"></ul>
+        <ul class="my-2 my-lg-0 navbar-nav" sec:authorize="isAuthenticated()">
+            <li class="nav-item">
+                <p class="nav-link">Welcome <span th:text="${#authentication.getPrincipal().getName()}"></span></p>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/logout}" class="nav-link">Logout</a>
+            </li>
+        </ul>
+        <ul class="my-2 my-lg-0 navbar-nav" sec:authorize="isAnonymous()">
+            <li class="nav-item">
+                <a th:href="@{/register}" class="nav-link">Register</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/login}" class="nav-link">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<footer th:fragment="footer">
+    <div class="footer">
+        Copyrights &copy; 2020 Dormart. All rights reserved
+    </div>
+</footer>
 </body>
 </html>
