@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+    <nav th:replace="fragments/layout :: header"></nav>
     <div class="jumbotron">
         <h3>Shopping cart</h3>
     </div>
@@ -12,7 +13,8 @@
     <div class="container">
         <div th:fragment="items" class="row" th:each="item, index : ${cart.items}" th:object="${item}">
             <div class="col-2">
-                <img src="https://via.placeholder.com/100" />
+                <img th:if="*{product.image == null}" src="https://via.placeholder.com/100" />
+                <img th:if="*{product.image}" th:src="@{/uploads/images/{name}(name=*{product.image})}" />
             </div>
             <div class="col-8">
                 <p>Name: <span th:text="*{product.name}"></span></p>
@@ -40,5 +42,6 @@
             </div>
         </div>
     </div>
+    <footer th:replace="fragments/layout :: footer"></footer>
 </body>
 </html>

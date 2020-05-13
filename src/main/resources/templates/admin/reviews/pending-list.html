@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+    <nav th:replace="fragments/layout :: header"></nav>
     <table class="table table-hover table-bordered">
         <thead>
             <tr>
@@ -30,6 +31,7 @@
             </tr>
         </tbody>
     </table>
+    <footer th:replace="fragments/layout :: footer"></footer>
     <script th:src="@{/js/admin/reviews/pending-list.js}"></script>
 </body>
 </html>

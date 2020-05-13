@@ -3,6 +3,7 @@
 <head th:replace="fragments/layout :: head">
 </head>
 <body th:object="${product}">
+    <nav th:replace="fragments/layout :: header"></nav>
     <div class="jumbotron">
         <h3 th:text="*{name}"></h3>
         <p class="text-muted" th:text="'Category: ' + *{category.name}"></p>
@@ -22,6 +23,13 @@
                 <h3 class="text-center" th:text="*{price} + '$/unit'"></h3>
             </div>
         </div>
+        <div class="row">
+            <div class="col-4">
+                <h4>Product Image</h4>
+            </div>
+            <div class="col-8"><img alt="Product image" th:src="@{/uploads/images/{name}(name = *{image})}" width="500" /></div>
+        </div>
     </div>
+    <footer th:replace="fragments/layout :: footer"></footer>
 </body>
 </html>

@@ -5,14 +5,16 @@
     <title>Title</title>
 </head>
 <body>
+    <header th:replace="fragments/layout :: header"></header>
     <div class="container">
         <div class="row">
-            <div class="col-8">
+            <div class="col-8 offset-2">
                 <form th:replace="users/user-form :: form(@{/register}, ${user})">
 
                 </form>
             </div>
         </div>
     </div>
+    <footer th:replace="fragments/layout :: footer"></footer>
 </body>
 </html>

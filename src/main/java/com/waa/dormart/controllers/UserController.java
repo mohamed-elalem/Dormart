@@ -7,6 +7,7 @@ import com.waa.dormart.services.RoleService;
 import com.waa.dormart.services.UserService;
 import com.waa.dormart.util.RoleUtil;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,5 +56,10 @@ public class UserController {
         userService.register(user);
 
         return "redirect:/";
+    }
+
+    @GetMapping("login")
+    public String loginForm(@AuthenticationPrincipal User user) {
+        return user == null ? "users/login" : "redirect:/";
     }
 }

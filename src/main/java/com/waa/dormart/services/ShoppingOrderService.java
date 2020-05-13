@@ -12,6 +12,6 @@ public interface ShoppingOrderService {
     List<ShoppingOrder> getBuyerOrders(Long buyerId);
     List<ShoppingOrder> getSellerOrders(Long sellerId);
     void changeOrderStatus(Long orderId, OrderStatusEnum status);
-
     ShoppingOrder getOrderById(Long id);
+    List<ShoppingOrder> getDeliveredProductOrders(Long productId);
 }

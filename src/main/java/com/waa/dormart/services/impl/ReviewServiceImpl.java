@@ -26,6 +26,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<Review> getApprovedProductReviews(Long productId) {
+        return reviewRepository
+                .getReviewerProductReviewsByApprovedStatus(productId, true);
+    }
+
+    @Override
     public Review approveReview(Long reviewId) {
         Review review = reviewRepository.getOne(reviewId);
         review.setApproved(true);

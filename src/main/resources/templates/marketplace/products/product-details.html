@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body th:object="${product}">
+    <nav th:replace="fragments/layout :: header"></nav>
     <div class="jumbotron">
         <h3 th:text="*{name}"></h3>
     </div>
@@ -37,13 +38,13 @@
                     <div class="comment-widgets">
                         <!-- Comment Row -->
                         <div th:each="review : ${reviews}" th:object="${review}" class="d-flex flex-row comment-row m-t-0">
-                            <div class="p-2"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1574583336/AAA/4.jpg" alt="user" width="50" class="rounded-circle"></div>
                             <div class="comment-text w-100">
                                 <h6 class="font-medium" th:text="*{reviewer.name}">James Thomas</h6>
+                                <hr>
                                 <span class="m-b-15 d-block" th:text="*{content}">
                                     This is awesome website. I would love to comeback again.
                                 </span>
-                                <div class="comment-footer pr-3"> <span class="text-muted float-right" th:text="*{createdAt}">April 14, 2019</span></div>
+                                <div class="comment-footer pr-3"> <span class="float-right" th:text="*{createdAt}">April 14, 2019</span></div>
                             </div>
                         </div>
                     </div> <!-- Card -->
@@ -65,7 +66,7 @@
                         </button>
                     </div>
 
-                    <input type="submit" value="Add new comment" class="btn btn-primary float-right">
+                    <input type="submit" value="Add new review" class="btn btn-primary float-right">
                 </form>
             </div>
         </div>
@@ -81,13 +82,33 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form th:action="@{/marketplace/cart/add-product}" method="post">
+                <form th:action="@{/marketplace/cart/add-product}" th:object="${cartProduct}" method="post">
                     <div class="modal-body">
-                            <input type="hidden" th:value="*{id}" name="productId" />
-                            <div class="form-group">
-                                <label for="quantity">Quantity</label>
-                                <input id="quantity" type="number" th:data-delta="*{price}" name="quantity" class="form-control product-cart-price-field" value="0" min="0" th:max="*{quantity}" step="1" />
-                            </div>
+                        <input type="hidden" th:value="${product.id}" name="productId" />
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input
+                                    id="quantity"
+                                    type="number"
+                                    th:data-delta="${product.price}"
+                                    name="quantity"
+                                    class="form-control product-cart-price-field"
+                                    th:field="*{quantity}"
+                                    value="0"
+                                    min="0" th:max="${product.quantity}"
+                                    step="1" />
+                        </div>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasErrors('*')}">
+                            <script>
+                                $(document).ready(() => {
+                                    $('#add-to-cart').modal('show');
+                                });
+                            </script>
+                            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <div>
                             <p>Price: <span class="product-cart-price ">$0.00</span></p>
                         </div>
@@ -100,6 +121,7 @@
             </div>
         </div>
     </div>
+    <footer th:replace="fragments/layout :: footer"></footer>
     <script th:src="@{/js/marketplace/products/product-details.js}"></script>
 </body>
 </html>

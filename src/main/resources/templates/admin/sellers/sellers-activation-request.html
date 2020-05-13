@@ -2,26 +2,29 @@
 <html
         xmlns:th="http://www.thymeleaf.org"
         xsi:schemaLocation="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments/layout :: head">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    <table>
+    <nav th:replace="fragments/layout :: header"></nav>
+    <table class="table table-hover">
         <tr>
             <th>Name</th>
             <th>Email</th>
+            <th></th>
         </tr>
         <tr th:each="seller: ${sellers}">
             <td th:text="${seller.name}"></td>
             <td th:text="${seller.email}"></td>
             <td>
                 <form th:action="@{/admin/sellers/{id}/activate(id=${seller.id})}" method="post">
-                    <input type="submit" value="Activate" />
+                    <input type="submit" class="btn btn-success" value="Activate" />
                 </form>
             </td>
         </tr>
 
     </table>
+    <footer th:replace="fragments/layout :: footer"></footer>
 </body>
 </html>

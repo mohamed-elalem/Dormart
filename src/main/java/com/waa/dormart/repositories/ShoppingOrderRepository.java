@@ -13,4 +13,7 @@ public interface ShoppingOrderRepository extends JpaRepository<ShoppingOrder, Lo
 
     @Query("SELECT o from ShoppingOrder o JOIN FETCH o.seller s where s.id = :sellerId")
     List<ShoppingOrder> findAllBySellerId(@Param("sellerId") Long sellerId);
+
+    @Query("SELECT o from ShoppingOrder o JOIN FETCH o.orderStatus os JOIN FETCH o.items i JOIN FETCH i.product p WHERE p.id = :productId AND os.status = :status")
+    List<ShoppingOrder> findAllByProductIdAnAndOrderStatus(@Param("productId") Long productId, @Param("status") String status);
 }

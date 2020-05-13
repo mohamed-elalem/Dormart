@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<head th:replace="fragments/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <nav th:replace="fragments/layout :: header"></nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
+                    <p th:text="#{login.invalidCredentials}">The credentials provided are not correct</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:action="@{/login}" method="post">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="username" id="email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input id="remember-me" type="checkbox" name="remember-me" />
+                        <label for="remember-me">Rememeber me on this computer</label>
+                    </div>
+                    <input class="btn btn-block btn-primary" type="submit" value="Login" />
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="fragments/layout :: footer"></footer>
+</body>
+</html>

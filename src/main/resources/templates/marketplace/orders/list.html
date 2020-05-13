@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+    <nav th:replace="fragments/layout :: header"></nav>
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -12,7 +13,7 @@
             </div>
         </div>
         <hr>
-        <div class="row">
+        <div class="row order-tabs">
             <div class="col-12">
                 <ul class="nav nav-pills nav-justified">
                     <li class="nav-item">
@@ -29,15 +30,25 @@
         </div>
     </div>
     <div class="tab-content">
-        <div class="tab-pane" id="pending-shoppingOrders">
-            <div th:each="shoppingOrder : ${pendingOrders}" th:object="${shoppingOrder}">
-                <h4>Order from <span class="text-muted" th:text="*{seller.name}"></span></h4>
-                <p>Order status: <span th:text="*{orderStatus.status}"></span></p>
-                <form th:action="@{/marketplace/orders/{id}/cancel(id=*{id})}" method="post" th:if="*{orderStatus.status.equals('PENDING')}">
-                    <input type="submit" class="btn btn-danger" value="Cancel">
-                </form>
-                <h4>Products</h4>
-                <div class="container">
+        <div class="tab-pane active" id="pending-shoppingOrders">
+            <div class="container">
+                <div class="shopping-order-card" th:each="shoppingOrder : ${pendingOrders}" th:object="${shoppingOrder}">
+                    <div class="row">
+                        <div class="col-8">
+                            <h4>Order from <span class="text-muted" th:text="*{seller.name}"></span></h4>
+                            <p>Order status: <span th:text="*{orderStatus.status}"></span></p>
+                        </div>
+                        <div class="col-4">
+                            <form th:action="@{/marketplace/orders/{id}/cancel(id=*{id})}" method="post" th:if="*{orderStatus.status.equals('PENDING')}">
+                                <input type="submit" class="btn btn-danger float-right btn-lg" value="Cancel">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>Products</h4>
+                        </div>
+                    </div>
                     <div class="row" th:each="item : ${shoppingOrder.items}" th:object="${item}">
                         <div class="col-12">
                             <hr>
@@ -47,7 +58,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <h4>Total: $<span th:text="*{price}"></span></h4>
+                        <div class="col-12">
+                            <h4>Total: $<span th:text="*{price}"></span></h4>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -55,11 +68,14 @@
         <div class="tab-pane" id="delivered-shoppingOrders">
             <div class="container">
                 <div class="row" th:each="order : ${deliveredOrders}" th:object="${order}" >
-                    <div class="col-3">
+                    <div class="col-2">
                         <p>From <span th:text="*{seller.name}"></span></p>
                     </div>
                     <div class="col-6"><span th:text="*{items.size()}"></span> items in this order</div>
-                    <div class="col-3">$<span th:text="*{price}"></span></div>
+                    <div class="col-2">$<span th:text="*{price}"></span></div>
+                    <div class="col-2">
+                        <a th:href="@{/marketplace/orders/{id}/receipt(id=*{id})}">View receipt</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,5 +91,6 @@
             </div>
         </div>
     </div>
+    <footer th:replace="fragments/layout :: footer"></footer>
 </body>
 </html>
