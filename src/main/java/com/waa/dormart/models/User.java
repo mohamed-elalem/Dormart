@@ -78,7 +78,8 @@ public class User implements UserDetails {
     @Email(message = "{model.email.error}")
     private String email;
 
-    @NotBlank(message = "{model.size.error}")
+    @NotBlank(message = "{model.notBlank.error}")
+    @Size(min = 6, max = 80, message = "{model.size.error}")
     private String password;
 
     @Transient

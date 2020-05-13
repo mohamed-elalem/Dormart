@@ -124,7 +124,7 @@ public class SellerProductController {
             return "sellers/products/new";
         }
 
-        if (image == null) {
+        if (image != null) {
             String filename = String.format("%s.%s", System.currentTimeMillis(), image.getContentType().split("/")[1]);
             storageService.store(image, filename);
 
